@@ -1,11 +1,7 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {Constants} from '../constants';
-import {
-  SplashScreen,
-  LoginScreen,
-} from '../screens';
-import SignUpScreen from '../screens/auth/signupScreen';
+import {SplashScreen, LoginScreen, LandingScreen} from '../screens';
 import {SafeAreaView} from 'react-native';
 import {BottomTabs} from './BottomTab';
 
@@ -18,13 +14,13 @@ const AppNavigator = () => {
         initialRouteName={Constants.SPLASH_SCREEN}
         screenOptions={({navigation, route}) => ({})}>
         <Stack.Screen
-          name={Constants.SPLASH_SCREEN}
-          component={SplashScreen}
+          name={Constants.LANDING_SCREEN}
+          component={LandingScreen}
           options={{headerShown: false}}
         />
         <Stack.Screen
-          name={Constants.SIGNUP_SCREEN}
-          component={SignUpScreen}
+          name={Constants.SPLASH_SCREEN}
+          component={SplashScreen}
           options={{headerShown: false}}
         />
         <Stack.Screen

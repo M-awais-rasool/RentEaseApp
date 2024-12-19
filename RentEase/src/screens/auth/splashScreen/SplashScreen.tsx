@@ -22,7 +22,7 @@ const SplashScreen = (props: any) => {
                 index: 0,
                 routes: [
                   {
-                    name: Constants.LOGIN_SCREEN,
+                    name: Constants.LANDING_SCREEN,
                   },
                 ],
               });
@@ -31,7 +31,7 @@ const SplashScreen = (props: any) => {
               index: 0,
               routes: [
                 {
-                  name: Constants.LOGIN_SCREEN,
+                  name: Constants.LANDING_SCREEN,
                 },
               ],
             });
@@ -41,7 +41,7 @@ const SplashScreen = (props: any) => {
             index: 0,
             routes: [
               {
-                name: Constants.LOGIN_SCREEN,
+                name: Constants.LANDING_SCREEN,
               },
             ],
           });

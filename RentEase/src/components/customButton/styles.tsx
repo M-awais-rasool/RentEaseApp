@@ -21,9 +21,9 @@ const styles = StyleSheet.create({
   bgStyle: {
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: Theme.responsiveSize.size8,
-    backgroundColor: Theme.colors.appColor,
-    paddingVertical: Theme.responsiveSize.size10,
+    borderRadius: Theme.responsiveSize.size20,
+    backgroundColor: Theme.colors.bgColor1,
+    paddingVertical: Theme.responsiveSize.size8,
   },
   viewSvg: {
     height: Theme.responsiveSize.size18,
@@ -31,15 +31,15 @@ const styles = StyleSheet.create({
     marginRight: Theme.responsiveSize.size5,
   },
   textStyle: {
-    color: Theme.colors.textColor1,
-    fontSize: Theme.responsiveSize.size14,
-    fontWeight: '700',
+    color: Theme.colors.black,
+    fontSize: Theme.responsiveSize.size13,
+    fontWeight: '500',
+    letterSpacing: 0.7,
     // fontFamily: Theme.fontFamily.fontInterMedium,
   },
-  image:{
-   marginLeft:Theme.responsiveSize.size10
+  image: {
+    marginLeft: Theme.responsiveSize.size10,
   },
-  
 });
 
 export default styles;
