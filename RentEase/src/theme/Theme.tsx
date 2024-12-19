@@ -8,9 +8,9 @@ const Theme = {
     disabled: '#BFBFBF',
     transparent: 'transparent',
 
-    bgColor1: '#059C6A',
-    bgColor2: '#FFFFFF',
-    bgColor3: '#FFA800',
+    bgColor1: '#82d533',
+    bgColor2: '#202020',
+    bgColor3: '#333333',
     bgColor4: '#A8A8A9',
     bgColor5: '#F8F8F8',
     bgColor6: '#DDFFF0',
@@ -166,7 +166,8 @@ const Theme = {
     size350: RFValue(350),
   },
   icons: {
-   
+    landingImg: require('../resource/images/landingImg.jpg'),
+    logo: require('../resource/images/logo.png'),
   },
 };
 export default Theme;

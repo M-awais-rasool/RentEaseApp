@@ -1,0 +1,409 @@
+definitions:
+  models.ErrorResponse:
+    properties:
+      message:
+        example: Invalid input
+        type: string
+      status:
+        example: error
+        type: string
+    type: object
+  models.GetItemsByCategoriesRequest:
+    properties:
+      categories:
+        example:
+        - electronics
+        - clothing
+        items:
+          type: string
+        type: array
+    type: object
+  models.RentReq:
+    description: Represents the request payload for renting a item
+    properties:
+      endDate:
+        example: "2024-01-20"
+        type: string
+      itemID:
+        example: CAR123
+        type: string
+      startDate:
+        example: "2024-01-15"
+        type: string
+    required:
+    - endDate
+    - itemID
+    - startDate
+    type: object
+  models.Response:
+    description: Response payload for item details.
+    properties:
+      category:
+        type: string
+      description:
+        type: string
+      id:
+        type: string
+      image1:
+        type: string
+      image2:
+        type: string
+      image3:
+        type: string
+      name:
+        type: string
+      price:
+        type: integer
+      status:
+        type: string
+    type: object
+  models.SignUp:
+    description: Model for user registration
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+      password:
+        minLength: 6
+        type: string
+    required:
+    - email
+    - name
+    - password
+    type: object
+  models.SuccessResponse:
+    properties:
+      data:
+        items:
+          additionalProperties: true
+          type: object
+        type: array
+      status:
+        example: success
+        type: string
+    type: object
+  models.UserSignIn:
+    description: Model for user registration
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
+    type: object
+info:
+  contact: {}
+  description: This is a sample server for a demo application
+  title: Demo API
+  version: "1.0"
+paths:
+  /Auth/sign-in:
+    post:
+      consumes:
+      - application/json
+      description: Authenticate user and generate JWT token
+      parameters:
+      - description: User Login Credentials
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.UserSignIn'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: User login
+      tags:
+      - Auth
+  /Auth/sign-up:
+    post:
+      consumes:
+      - application/json
+      description: Create a new user account
+      parameters:
+      - description: User Registration Details
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.SignUp'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Register a new user
+      tags:
+      - Auth
+  /Rent/rental-item:
+    post:
+      consumes:
+      - application/json
+      description: Collect rental start and end dates from the user and mark the car
+        status as "not available"
+      parameters:
+      - description: Rental Request
+        in: body
+        name: models.RentReq
+        required: true
+        schema:
+          $ref: '#/definitions/models.RentReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Rent a Items
+      tags:
+      - Rental Item
+  /item/create-item:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Create an item with a UUID, images, name, description, category,
+        and price
+      parameters:
+      - description: Item Name
+        in: formData
+        name: name
+        required: true
+        type: string
+      - description: Item Description
+        in: formData
+        name: description
+        required: true
+        type: string
+      - description: Item Category
+        in: formData
+        name: category
+        required: true
+        type: string
+      - description: Item Price
+        in: formData
+        name: price
+        required: true
+        type: number
+      - description: First Image (required)
+        in: formData
+        name: image1
+        required: true
+        type: file
+      - description: Second Image (required)
+        in: formData
+        name: image2
+        required: true
+        type: file
+      - description: Third Image (required)
+        in: formData
+        name: image3
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Create Item
+      tags:
+      - Items
+  /item/get-all-items:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve all items from the database
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Get All Items
+      tags:
+      - Items
+  /item/get-item-byUserID:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves items associated with a specific user based on the provided
+        JWT token.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Item data
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Get Items by User ID
+      tags:
+      - Items
+  /item/get-items-by-categories:
+    post:
+      consumes:
+      - application/json
+      description: Retrieve items filtered by specified categories
+      parameters:
+      - description: Categories Filter
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.GetItemsByCategoriesRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully retrieved items
+          schema:
+            $ref: '#/definitions/models.SuccessResponse'
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Items by Categories
+      tags:
+      - Items
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

@@ -2,42 +2,26 @@ import {StyleSheet} from 'react-native';
 import Theme from '../../theme/Theme';
 
 const styles = StyleSheet.create({
-  // Common
-  bgStyle: {
-    height: Theme.responsiveSize.size45,
-    justifyContent: 'center',
-    borderRadius: Theme.responsiveSize.size8,
-    borderWidth: Theme.responsiveSize.size1,
-    borderColor: Theme.colors.borderColor2,
-    backgroundColor: Theme.colors.bgColor5,
-    paddingHorizontal: Theme.responsiveSize.size15,
-  },
-  textStyle: {
-    color: Theme.colors.textColor11,
-    fontSize: Theme.responsiveSize.size16,
-  },
-
-  // New input text
   textSubTitle: {
-    color: Theme.colors.textColor11,
+    color: Theme.colors.white,
     fontSize: Theme.responsiveSize.size11,
     fontWeight: '500',
+    paddingLeft: Theme.responsiveSize.size15,
   },
   viewBgInputText: {
     flexDirection: 'row',
     alignItems: 'center',
-    height: Theme.responsiveSize.size45,
+    height: Theme.responsiveSize.size38,
     marginTop: Theme.responsiveSize.size3,
-    backgroundColor: Theme.colors.white,
-    borderColor: Theme.colors.borderColor5,
-    borderWidth: Theme.responsiveSize.size1,
-    borderRadius: Theme.responsiveSize.size8,
+    backgroundColor: Theme.colors.bgColor3,
+    borderRadius: Theme.responsiveSize.size30,
     paddingHorizontal: Theme.responsiveSize.size12,
   },
   textInput: {
-    color: Theme.colors.textColor6,
-    fontSize: Theme.responsiveSize.size13,
+    color: Theme.colors.white,
+    fontSize: Theme.responsiveSize.size12,
     fontWeight: '500',
+    letterSpacing: 0.6,
   },
   textInput1: {
     color: Theme.colors.textColor6,
@@ -55,6 +39,8 @@ const styles = StyleSheet.create({
     marginTop: Theme.responsiveSize.size2,
     fontSize: Theme.responsiveSize.size11,
     fontWeight: '400',
+    paddingLeft: Theme.responsiveSize.size10,
+    marginBottom: -Theme.responsiveSize.size5,
   },
 });
 
