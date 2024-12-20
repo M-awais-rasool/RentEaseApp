@@ -4,7 +4,7 @@ import Theme from '../../theme/Theme';
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    backgroundColor: Theme.colors.bgColor2,
+    backgroundColor: Theme.colors.appColor,
     width: '90%',
     alignSelf: 'center',
     height: '64%',

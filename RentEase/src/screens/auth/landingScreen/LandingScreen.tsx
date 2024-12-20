@@ -1,4 +1,4 @@
-import {View, Text, ImageBackground} from 'react-native';
+import {View, Text, ImageBackground, Image} from 'react-native';
 import React from 'react';
 import Theme from '../../../theme/Theme';
 import styles from './styles';
@@ -8,6 +8,9 @@ import {Constants} from '../../../constants';
 const LandingScreen = (props: any) => {
   return (
     <ImageBackground source={Theme.icons.landingImg} style={styles.container}>
+      <View style={styles.logoContainer}>
+        <Image source={Theme.icons.logo} style={styles.logo} />
+      </View>
       <View style={styles.bottomContainer}>
         <Text style={styles.title}>{'Unlock More Together'}</Text>
         <Text style={styles.subtitle}>
