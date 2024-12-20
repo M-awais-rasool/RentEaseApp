@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: Theme.responsiveSize.size38,
     marginTop: Theme.responsiveSize.size3,
-    backgroundColor: Theme.colors.bgColor3,
+    backgroundColor: '#1E1E1E',
     borderRadius: Theme.responsiveSize.size30,
     paddingHorizontal: Theme.responsiveSize.size12,
   },

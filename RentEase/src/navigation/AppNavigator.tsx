@@ -1,9 +1,9 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {Constants} from '../constants';
-import {SplashScreen, LoginScreen, LandingScreen} from '../screens';
+import {SplashScreen, LoginScreen, LandingScreen, SearchData} from '../screens';
 import {SafeAreaView} from 'react-native';
-import {BottomTabs} from './BottomTab';
+import BottomTabs from './BottomTab';
 
 const Stack = createNativeStackNavigator();
 
@@ -26,6 +26,16 @@ const AppNavigator = () => {
         <Stack.Screen
           name={Constants.LOGIN_SCREEN}
           component={LoginScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name={Constants.SEARCH_DATA_SCREEN}
+          component={SearchData}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name={Constants.BOTTOM_TABS}
+          component={BottomTabs}
           options={{headerShown: false}}
         />
       </Stack.Navigator>

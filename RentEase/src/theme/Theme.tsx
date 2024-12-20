@@ -2,7 +2,7 @@ import {RFValue} from 'react-native-responsive-fontsize';
 
 const Theme = {
   colors: {
-    appColor: '#242B47',
+    appColor: '#121212',
     white: '#FFFFFF',
     black: '#000000',
     disabled: '#BFBFBF',
@@ -13,15 +13,15 @@ const Theme = {
     bgColor3: '#333333',
     bgColor4: '#A8A8A9',
     bgColor5: '#F8F8F8',
-    bgColor6: '#DDFFF0',
+    bgColor6: '#1c1c1e',
     bgColor7: '#F6F8FF',
     bgColor8: '#FEF5F4',
-    bgColor9: '#E4E0EF',
+    bgColor9: '#292929',
     bgColor10: '#FCFCFC',
 
-    bgColor11: '#D8F0F3',
-    bgColor12: '#F7DDD6',
-    bgColor13: '#ECFBEE',
+    bgColor11: '#1a1a1a',
+    bgColor12: '#1E1E1E',
+    bgColor13: '#2A2A2A',
     bgColor14: '#F7F1FF',
     bgColor15: '#FFFFFF82',
     bgColor16: '#FFF3F0',

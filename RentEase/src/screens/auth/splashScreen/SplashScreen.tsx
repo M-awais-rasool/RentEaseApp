@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect} from 'react';
+import React, {useCallback} from 'react';
 import {Image, StatusBar, View} from 'react-native';
 import styles from './styles';
 import {useFocusEffect} from '@react-navigation/native';
@@ -18,14 +18,14 @@ const SplashScreen = (props: any) => {
           );
           if (token) {
             await saveToken(token);
-              props.navigation.reset({
-                index: 0,
-                routes: [
-                  {
-                    name: Constants.LANDING_SCREEN,
-                  },
-                ],
-              });
+            props.navigation.reset({
+              index: 0,
+              routes: [
+                {
+                  name: Constants.BOTTOM_TABS,
+                },
+              ],
+            });
           } else {
             props.navigation.reset({
               index: 0,

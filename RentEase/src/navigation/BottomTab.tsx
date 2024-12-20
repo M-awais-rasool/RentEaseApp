@@ -1,103 +1,139 @@
+import React, {useRef} from 'react';
+import {View, TouchableOpacity, StyleSheet, Animated} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {Image, Text} from 'react-native';
-import Theme from '../theme/Theme';
-import React from 'react';
-import {Constants} from '../constants';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import {
-  RiderHome,
-  RiderLocationScreen,
-  RiderNotificationScreen,
-  RiderProfileScreen,
+  AddItemScreen,
+  ChatScreen,
+  HomeScreen,
+  ProfileScreen,
+  SearchScreen,
 } from '../screens';
+import Theme from '../theme/Theme';
+import {Constants} from '../constants';
 
 const Tab = createBottomTabNavigator();
 
-export function BottomTabs() {
+const TabBarCustomButton = ({children, onPress, focused}: any) => {
+  const scaleAnim = useRef(new Animated.Value(1)).current;
+
+  React.useEffect(() => {
+    Animated.spring(scaleAnim, {
+      toValue: focused ? 1.2 : 1,
+      useNativeDriver: true,
+    }).start();
+  }, [focused]);
+
+  return (
+    <TouchableOpacity onPress={onPress} style={styles.customButtonContainer}>
+      <Animated.View
+        style={[styles.customButton, {transform: [{scale: scaleAnim}]}]}>
+        {children}
+      </Animated.View>
+    </TouchableOpacity>
+  );
+};
+
+export default function BottomTabs() {
   return (
     <Tab.Navigator
-      initialRouteName={Constants.RIDER_HOME_SCREEN}
       screenOptions={({route}) => ({
-        tabBarIcon: ({focused, color}) => {
-          let iconSource;
+        tabBarShowLabel: false,
+        headerShown: false,
+        tabBarStyle: styles.tabBar,
+        tabBarIcon: ({focused}) => {
+          let iconName: string = '';
+          let notificationBadge = false;
 
-          if (route.name === Constants.RIDER_HOME_SCREEN) {
-            iconSource = focused ? Theme.icons.riderActive1 : Theme.icons.rider1;
-          } else if (route.name === Constants.RIDER_LOCATION_SCREEN) {
-            iconSource = focused
-              ? Theme.icons.riderActive2
-              : Theme.icons.rider2;
-          } else if (route.name === Constants.RIDER_NOTIFICATION_SCREEN) {
-            iconSource = focused ? Theme.icons.riderActive3 : Theme.icons.rider3;
-          } else if (route.name === Constants.RIDER_PROFILE_SCREEN) {
-            iconSource = focused ? Theme.icons.riderActive4 : Theme.icons.rider4;
+          switch (route.name) {
+            case Constants.HOME_SCREEN:
+              iconName = focused ? 'home' : 'home-outline';
+              break;
+            case Constants.SEARCH_SCREEN:
+              iconName = focused ? 'search' : 'search-outline';
+              break;
+            case Constants.CHAT_SCREEN:
+              iconName = focused ? 'chatbubble' : 'chatbubble-outline';
+              notificationBadge = true;
+              break;
+            case Constants.PROFILE_SCREEN:
+              iconName = focused ? 'person' : 'person-outline';
+              break;
           }
 
           return (
-            <Image
-              source={iconSource}
-              style={{
-                tintColor: color,
-                width: Theme.responsiveSize.size16,
-                height: Theme.responsiveSize.size16,
-                position: 'absolute',
-                top: 20,
-              }}
-            />
+            <View style={styles.iconContainer}>
+              <Ionicons
+                name={iconName}
+                size={25}
+                color={focused ? 'white' : 'gray'}
+              />
+              {notificationBadge && <View style={styles.badge} />}
+            </View>
           );
-        },
-        tabBarLabel: ({focused}) => {
-          // let label;
-          // if (route.name === Constants.RIDER_HOME_SCREEN) {
-          //   label = 'Home';
-          // } else if (route.name === Constants.RIDER_LOCATION_SCREEN) {
-          //   label = 'Cart';
-          // } else if (route.name === Constants.RIDER_NOTIFICATION_SCREEN) {
-          //   label = 'Setting';
-          // } else if (route.name === Constants.RIDER_PROFILE_SCREEN) {
-          //   label = 'Profile';
-          // }
-          return (
-            <Text
-              style={{
-                color: focused ? Theme.colors.appColor : Theme.colors.disabled,
-                fontSize: Theme.responsiveSize.size10,
-                fontWeight: focused ? 'bold' : 'normal',
-                position: 'absolute',
-                bottom: 5,
-              }}>
-            </Text>
-          );
-        },
-        tabBarActiveTintColor: Theme.colors.appColor,
-        tabBarInactiveTintColor: Theme.colors.disabled,
-        tabBarItemStyle: {
-          height: Theme.responsiveSize.size45,
-        },
-        tabBarStyle: {
-          height: Theme.responsiveSize.size50,
-          // paddingBottom: Theme.responsiveSize.size5,
         },
       })}>
+      <Tab.Screen name={Constants.HOME_SCREEN} component={HomeScreen} />
+      <Tab.Screen name={Constants.SEARCH_SCREEN} component={SearchScreen} />
       <Tab.Screen
-        name={Constants.RIDER_HOME_SCREEN}
-        component={RiderHome}
-        options={{headerShown: false}}
+        name={Constants.ADD_ITEM_SCREEN}
+        component={AddItemScreen}
+        options={{
+          tabBarButton: props => <TabBarCustomButton {...props} />,
+          tabBarIcon: () => <Ionicons name="add" size={30} color="black" />,
+        }}
       />
-      <Tab.Screen
-        name={Constants.RIDER_LOCATION_SCREEN}
-        component={RiderLocationScreen}
-        options={{headerShown: false}}
-      />
-      <Tab.Screen
-        name={Constants.RIDER_NOTIFICATION_SCREEN}
-        component={RiderNotificationScreen}
-        options={{headerShown: false}}
-      />
-      <Tab.Screen
-        name={Constants.RIDER_PROFILE_SCREEN}
-        component={RiderProfileScreen}
-        options={{headerShown: false}}
-      />
+      <Tab.Screen name={Constants.CHAT_SCREEN} component={ChatScreen} />
+      <Tab.Screen name={Constants.PROFILE_SCREEN} component={ProfileScreen} />
     </Tab.Navigator>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingHorizontal: Theme.responsiveSize.size10,
+  },
+  tabBar: {
+    position: 'absolute',
+    bottom: Theme.responsiveSize.size10,
+    left: Theme.responsiveSize.size10,
+    right: Theme.responsiveSize.size10,
+    elevation: 0,
+    backgroundColor: Theme.colors.black,
+    borderRadius: Theme.responsiveSize.size40,
+    height: Theme.responsiveSize.size50,
+  },
+  customButtonContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    top: -Theme.responsiveSize.size15,
+  },
+  customButton: {
+    width: Theme.responsiveSize.size50,
+    height: Theme.responsiveSize.size50,
+    borderRadius: Theme.responsiveSize.size25,
+    backgroundColor: Theme.colors.bgColor1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: Theme.colors.bgColor1,
+    shadowOffset: {width: 0, height: 10},
+    shadowOpacity: 0.5,
+    shadowRadius: 3.5,
+  },
+  iconContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    top: Theme.responsiveSize.size10,
+  },
+  badge: {
+    position: 'absolute',
+    top: -Theme.responsiveSize.size1,
+    right: -Theme.responsiveSize.size1,
+    backgroundColor: 'red',
+    width: Theme.responsiveSize.size8,
+    height: Theme.responsiveSize.size8,
+    borderRadius: Theme.responsiveSize.size5,
+  },
+});

@@ -106,7 +106,7 @@ const SignUpSection = ({onPress}: any) => {
       <CustomButton
         title="Login"
         onClick={() => onPress()}
-        bgStyle={{backgroundColor: Theme.colors.bgColor3}}
+        bgStyle={{backgroundColor: Theme.colors.bgColor12}}
         textStyle={{color: Theme.colors.white}}
       />
     </ScrollView>

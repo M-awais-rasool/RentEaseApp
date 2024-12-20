@@ -3,7 +3,7 @@ import React, {useState} from 'react';
 import styles from './styles';
 import {InputText} from '../customInputText';
 import {CustomButton} from '../customButton';
-import {Validations} from '../../constants';
+import {Constants, Validations} from '../../constants';
 import {useMutation} from '@tanstack/react-query';
 import {AxiosError, AxiosResponse} from 'axios';
 import {SignIn} from '../../services';
@@ -12,6 +12,7 @@ import {saveDataToCachedWithKey} from '../../module/cacheData';
 import {AppConstants} from '../../module';
 import {useToast} from 'react-native-toasty-toast';
 import Theme from '../../theme/Theme';
+import {useNavigation} from '@react-navigation/native';
 
 type SignInData = {Email: string; Password: string};
 type SignInResponse = {
@@ -23,6 +24,7 @@ type SignInResponse = {
 
 const LoginSection = ({onPress}: any) => {
   const {showToast} = useToast();
+  const nav: any = useNavigation();
   const [textEmail, setTextEmail] = useState<string>('');
   const [textPassword, setTextPassword] = useState<string>('');
   const [errorEmail, setErrorEmail] = useState<string>('');
@@ -68,6 +70,7 @@ const LoginSection = ({onPress}: any) => {
         data.data.userId,
       );
       showToast(data.message, 'success', 'top', 1000);
+      nav.navigate(Constants.BOTTOM_TABS);
     },
     onError: (error: any) => {
       showToast(error.response.data.message, 'error', 'bottom', 1000);
@@ -107,7 +110,7 @@ const LoginSection = ({onPress}: any) => {
       <CustomButton
         title="Sign up"
         onClick={() => onPress()}
-        bgStyle={{backgroundColor: Theme.colors.bgColor3}}
+        bgStyle={{backgroundColor: Theme.colors.bgColor12}}
         textStyle={{color: Theme.colors.white}}
       />
     </ScrollView>

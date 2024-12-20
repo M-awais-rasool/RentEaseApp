@@ -6,10 +6,23 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
-
+  logoContainer: {
+    width: Theme.responsiveSize.size100,
+    height: Theme.responsiveSize.size35,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: Theme.colors.black,
+    marginTop: Theme.responsiveSize.size35,
+    alignSelf: 'center',
+    borderRadius: Theme.responsiveSize.size10,
+  },
+  logo: {
+    width: Theme.responsiveSize.size90,
+    height: Theme.responsiveSize.size30,
+  },
   bottomContainer: {
     position: 'absolute',
-    backgroundColor: Theme.colors.bgColor2,
+    backgroundColor: Theme.colors.appColor,
     width: '90%',
     bottom: Theme.responsiveSize.size20,
     alignSelf: 'center',
