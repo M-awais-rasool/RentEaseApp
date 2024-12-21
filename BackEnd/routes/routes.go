@@ -17,6 +17,7 @@ func SetRoutes() *gin.Engine {
 	router.POST("item/create-item", handlers.CreateItem)
 	router.POST("item/get-items-by-categories", handlers.GetItemsByCategories)
 	router.GET("item/get-all-items", handlers.GetAllItems)
+	router.GET("item/get-item-byID/:id", handlers.GetItemsByID)
 	router.GET("item/get-item-byUserID", handlers.Get_Items_ByUserID)
 
 	router.POST("Rent/rental-item", handlers.Rent_item)

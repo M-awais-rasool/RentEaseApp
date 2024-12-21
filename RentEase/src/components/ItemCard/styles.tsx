@@ -4,10 +4,10 @@ import Theme from '../../theme/Theme';
 const styles = StyleSheet.create({
   card: {
     width: '48%',
-    marginRight: Theme.responsiveSize.size10,
+    marginRight: Theme.responsiveSize.size4,
     backgroundColor: Theme.colors.bgColor6,
-    borderRadius: Theme.responsiveSize.size10,
-    marginTop: Theme.responsiveSize.size10,
+    borderRadius: Theme.responsiveSize.size20,
+    marginTop: Theme.responsiveSize.size4,
     overflow: 'hidden',
   },
   image: {

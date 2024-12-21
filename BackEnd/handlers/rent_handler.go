@@ -18,7 +18,7 @@ import (
 // @Accept json
 // @Produce json
 // @Security BearerAuth
-// @Param Rental Request body models.RentReq true "Rental Request"
+// @Param RentalRequest body models.RentReq true "Rental Request"
 // @Success 200 {object} map[string]interface{}
 // @Failure 400 {object} map[string]string
 // @Failure 401 {object} map[string]string

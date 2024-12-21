@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"context"
+	"database/sql"
 	"demo/database"
 	"demo/envConfig"
 	"demo/models"
@@ -376,4 +377,62 @@ func GetItemsByCategories(c *gin.Context) {
 		"status": "success",
 		"data":   items,
 	})
+}
+
+// @Summary Get Items by ID
+// @Description Retrieve an item by its ID
+// @Tags Items
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param id path string true "Item ID"
+// @Success 200 {object} models.Response "Item data"
+// @Failure 401 {object} map[string]string
+// @Failure 404 {object} map[string]string
+// @Failure 500 {object} map[string]string
+// @Router /item/get-item-byID/{id} [get]
+func GetItemsByID(c *gin.Context) {
+	tokenString := c.GetHeader("Authorization")
+	if tokenString == "" {
+		c.JSON(http.StatusUnauthorized, gin.H{"status": "error", "message": "Missing token"})
+		return
+	}
+	_, err := utils.ValidateToken(tokenString)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"status": "error", "message": "Invalid token"})
+		return
+	}
+	id := c.Param("id")
+	items := []map[string]interface{}{}
+
+	query := `
+        SELECT ID, Name, Description, Category, Image1, Image2, Image3, status, price
+        FROM Items 
+        WHERE ID = ?`
+	var ID, Name, Description, Category, Image1, Image2, Image3, Status string
+	var Price int
+	err = database.DB.QueryRow(query, id).Scan(&ID, &Name, &Description, &Category, &Image1, &Image2, &Image3, &Status, &Price)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			c.JSON(http.StatusNotFound, gin.H{"status": "error", "message": "Item not found"})
+		} else {
+			c.JSON(http.StatusInternalServerError, gin.H{"status": "error", "message": "Query error"})
+		}
+		return
+	}
+	item := map[string]interface{}{
+		"id":          ID,
+		"name":        Name,
+		"description": Description,
+		"category":    Category,
+		"status":      Status,
+		"price":       Price,
+		"images": []string{
+			Image1,
+			Image2,
+			Image3,
+		},
+	}
+	items = append(items, item)
+	c.JSON(http.StatusOK, gin.H{"status": "success", "data": items})
 }

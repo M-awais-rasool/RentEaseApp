@@ -6,6 +6,7 @@ import {
   TextInput,
   Image,
   ScrollView,
+  Alert,
 } from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -13,6 +14,7 @@ import styles from './styles';
 import Theme from '../../theme/Theme';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {CustomButton, InputText} from '../../components';
+import {checkPermission} from '../../api/api';
 
 const AddItemScreen = () => {
   const [images, setImages] = useState<string[]>([]);
@@ -22,6 +24,14 @@ const AddItemScreen = () => {
   const [category, setCategory] = useState('');
 
   const pickImage = async (index: number) => {
+    const hasPermission = await checkPermission('gallery');
+    if (!hasPermission) {
+      Alert.alert(
+        'Permission Denied',
+        'Gallery permission is required to pick images.',
+      );
+      return;
+    }
     try {
       const image = await ImagePicker.openPicker({
         width: 1000,
@@ -30,7 +40,6 @@ const AddItemScreen = () => {
         compressImageQuality: 0.8,
         mediaType: 'photo',
       });
-
       if (image) {
         const newImages = [...images];
         newImages[index] = image.path;
