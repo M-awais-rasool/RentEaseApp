@@ -179,7 +179,7 @@ paths:
       parameters:
       - description: Rental Request
         in: body
-        name: models.RentReq
+        name: RentalRequest
         required: true
         schema:
           $ref: '#/definitions/models.RentReq'
@@ -321,6 +321,47 @@ paths:
       security:
       - BearerAuth: []
       summary: Get All Items
+      tags:
+      - Items
+  /item/get-item-byID/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve an item by its ID
+      parameters:
+      - description: Item ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Item data
+          schema:
+            $ref: '#/definitions/models.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Get Items by ID
       tags:
       - Items
   /item/get-item-byUserID:

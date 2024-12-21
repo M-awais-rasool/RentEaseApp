@@ -12,7 +12,7 @@ const SearchScreen = (props: any) => {
   const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
 
   const filterData = {
-    Cars: ['car', 'Sedans', 'SUVs', 'Trucks', 'Vans'],
+    Cars: ['car', 'bus', 'Sedans', 'SUVs', 'Trucks', 'Vans'],
     Motorcycles: ['Street Bikes', 'Off-road Bikes', 'Cruisers'],
     Bicycles: ['Mountain Bikes', 'Electric Bikes', 'Road Bikes'],
     Boats: ['Speedboats', 'Sailboats', 'Kayaks'],

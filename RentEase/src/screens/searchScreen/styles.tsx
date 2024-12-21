@@ -66,6 +66,9 @@ const styles = StyleSheet.create({
   filterTextSelected: {
     color: Theme.colors.bgColor1,
   },
+  marginV5: {
+    marginTop: Theme.responsiveSize.size5,
+  },
 });
 
 export default styles;

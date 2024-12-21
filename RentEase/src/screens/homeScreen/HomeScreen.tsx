@@ -6,6 +6,7 @@ import {useQuery} from '@tanstack/react-query';
 import {get_home_items} from '../../services';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Theme from '../../theme/Theme';
+import {Constants} from '../../constants';
 
 type Item = {
   id: string;
@@ -13,7 +14,7 @@ type Item = {
   price: string;
   image1: string;
 };
-const HomeScreen = () => {
+const HomeScreen = (props: any) => {
   const {data, error, isLoading} = useQuery<Item[], Error>({
     queryKey: ['homeItems'],
     queryFn: get_home_items,
@@ -35,9 +36,17 @@ const HomeScreen = () => {
         data={data}
         keyExtractor={item => item.id}
         renderItem={({item}) => (
-          <ItemCard title={item.name} image={item.image1} price={item.price} />
+          <ItemCard
+            title={item.name}
+            image={item.image1}
+            price={item.price}
+            onPress={() => {
+              props.navigation.navigate(Constants.ITEMS_DETAIL_SCREEN, {item});
+            }}
+          />
         )}
         showsHorizontalScrollIndicator={false}
+        contentContainerStyle={{alignItems: 'center'}}
       />
     </ScrollView>
   );
