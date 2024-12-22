@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, {useState, useRef} from 'react';
 import {
   View,
   Text,
@@ -10,15 +10,16 @@ import {
   StyleSheet,
 } from 'react-native';
 import styles from './styles';
-import { CustomButton } from '../../components';
+import {CustomButton} from '../../components';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Theme from '../../theme/Theme';
-import { Picker } from '@react-native-picker/picker';
+import {Picker} from '@react-native-picker/picker';
+import {Constants} from '../../constants';
 
-const { width } = Dimensions.get('window');
+const {width} = Dimensions.get('window');
 
 const CarRentalScreen = (props: any) => {
-  const { item } = props.route.params;
+  const {item} = props.route.params;
   const scrollX = useRef(new Animated.Value(0)).current;
   const [showCalendar, setShowCalendar] = useState(false);
   const [startDate, setStartDate] = useState('11 October');
@@ -26,7 +27,7 @@ const CarRentalScreen = (props: any) => {
 
   // Calendar data
   const months = ['October', 'November', 'December'];
-  const days = Array.from({ length: 31 }, (_, i) => `${i + 1}`);
+  const days = Array.from({length: 31}, (_, i) => `${i + 1}`);
 
   const renderDot = (index: any) => {
     const inputRange = [
@@ -53,7 +54,7 @@ const CarRentalScreen = (props: any) => {
         style={[
           styles.dot,
           {
-            transform: [{ scale }],
+            transform: [{scale}],
             opacity,
           },
         ]}
@@ -66,8 +67,7 @@ const CarRentalScreen = (props: any) => {
       visible={showCalendar}
       animationType="slide"
       transparent
-      onRequestClose={() => setShowCalendar(false)}
-    >
+      onRequestClose={() => setShowCalendar(false)}>
       <View style={calendarStyles.modalContainer}>
         <View style={calendarStyles.calendarContainer}>
           <View style={calendarStyles.calendar}>
@@ -87,10 +87,9 @@ const CarRentalScreen = (props: any) => {
           <View style={calendarStyles.dateSelection}>
             <View style={calendarStyles.datePickerContainer}>
               <Text style={calendarStyles.label}>From</Text>
-              <TouchableOpacity 
+              <TouchableOpacity
                 style={calendarStyles.dateButton}
-                onPress={() => {}}
-              >
+                onPress={() => {}}>
                 <Text style={calendarStyles.dateButtonText}>{startDate}</Text>
                 <Ionicons name="chevron-down" size={20} color="#000" />
               </TouchableOpacity>
@@ -98,10 +97,9 @@ const CarRentalScreen = (props: any) => {
 
             <View style={calendarStyles.datePickerContainer}>
               <Text style={calendarStyles.label}>To</Text>
-              <TouchableOpacity 
+              <TouchableOpacity
                 style={calendarStyles.dateButton}
-                onPress={() => {}}
-              >
+                onPress={() => {}}>
                 <Text style={calendarStyles.dateButtonText}>{endDate}</Text>
                 <Ionicons name="chevron-down" size={20} color="#000" />
               </TouchableOpacity>
@@ -114,10 +112,9 @@ const CarRentalScreen = (props: any) => {
             <TouchableOpacity style={calendarStyles.chatButton}>
               <Ionicons name="chatbubble-outline" size={25} color="white" />
             </TouchableOpacity>
-            <TouchableOpacity 
+            <TouchableOpacity
               style={calendarStyles.rentButton}
-              onPress={() => setShowCalendar(false)}
-            >
+              onPress={() => setShowCalendar(false)}>
               <Text style={calendarStyles.rentButtonText}>Rent</Text>
             </TouchableOpacity>
           </View>
@@ -133,15 +130,14 @@ const CarRentalScreen = (props: any) => {
         pagingEnabled
         showsHorizontalScrollIndicator={false}
         onScroll={Animated.event(
-          [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-          { useNativeDriver: true },
+          [{nativeEvent: {contentOffset: {x: scrollX}}}],
+          {useNativeDriver: true},
         )}
         scrollEventThrottle={16}
-        style={styles.carousel}
-      >
+        style={styles.carousel}>
         {[item?.image1, item?.image2, item?.image3].map((image, index) => (
           <View key={index} style={styles.slide}>
-            <Image source={{ uri: image }} style={styles.carImage} />
+            <Image source={{uri: image}} style={styles.carImage} />
           </View>
         ))}
       </Animated.ScrollView>
@@ -154,13 +150,21 @@ const CarRentalScreen = (props: any) => {
 
       <View style={styles.footer}>
         <Text style={styles.price}>{item?.price}$/day</Text>
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() =>
+            props.navigation.navigate(Constants.MESSAGE_SCREEN, {
+              id: item.id,
+              name: item.name,
+              image: item.image1,
+              userID: item.userID,
+            })
+          }>
           <Ionicons name="chatbubble-outline" size={25} color="white" />
         </TouchableOpacity>
         <CustomButton
           title="Rent"
           onClick={() => setShowCalendar(true)}
-          bgStyle={{ width: Theme.responsiveSize.size100 }}
+          bgStyle={{width: Theme.responsiveSize.size100}}
         />
       </View>
 

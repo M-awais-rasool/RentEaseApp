@@ -265,6 +265,7 @@ func GetAllItems(c *gin.Context) {
 
 		item := map[string]interface{}{
 			"id":          id,
+			"userID":      userID,
 			"name":        name,
 			"description": description,
 			"category":    category,
@@ -406,12 +407,12 @@ func GetItemsByID(c *gin.Context) {
 	items := []map[string]interface{}{}
 
 	query := `
-        SELECT ID, Name, Description, Category, Image1, Image2, Image3, status, price
+        SELECT ID, UserID, Name, Description, Category, Image1, Image2, Image3, status, price
         FROM Items 
         WHERE ID = ?`
-	var ID, Name, Description, Category, Image1, Image2, Image3, Status string
+	var ID, UserID, Name, Description, Category, Image1, Image2, Image3, Status string
 	var Price int
-	err = database.DB.QueryRow(query, id).Scan(&ID, &Name, &Description, &Category, &Image1, &Image2, &Image3, &Status, &Price)
+	err = database.DB.QueryRow(query, id).Scan(&ID, &UserID, &Name, &Description, &Category, &Image1, &Image2, &Image3, &Status, &Price)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			c.JSON(http.StatusNotFound, gin.H{"status": "error", "message": "Item not found"})
@@ -422,6 +423,7 @@ func GetItemsByID(c *gin.Context) {
 	}
 	item := map[string]interface{}{
 		"id":          ID,
+		"userID":      UserID,
 		"name":        Name,
 		"description": Description,
 		"category":    Category,

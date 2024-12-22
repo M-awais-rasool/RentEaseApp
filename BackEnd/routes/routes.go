@@ -11,6 +11,9 @@ import (
 func SetRoutes() *gin.Engine {
 	router := gin.Default()
 
+	go handlers.BroadcastMessages()
+	router.GET("/ws", handlers.WebSocketHandler)
+
 	router.POST("Auth/sign-in", handlers.SignIn)
 	router.POST("Auth/sign-up", handlers.SignUp)
 
@@ -20,7 +23,12 @@ func SetRoutes() *gin.Engine {
 	router.GET("item/get-item-byID/:id", handlers.GetItemsByID)
 	router.GET("item/get-item-byUserID", handlers.Get_Items_ByUserID)
 
+	router.POST("chat/send-message", handlers.SendMessage)
+	router.GET("chat/get-messages", handlers.GetMessages)
+	router.DELETE("chat/delete-messages", handlers.DeleteMessages)
+
 	router.POST("Rent/rental-item", handlers.Rent_item)
+
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	return router
 }

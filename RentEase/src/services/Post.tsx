@@ -5,4 +5,9 @@ async function get_items_byCategroy(categories: any) {
   return res.data;
 }
 
-export {get_items_byCategroy};
+async function send_message(data: any) {
+  const res = await API.post('chat/send-message', data);
+  return res.data;
+}
+
+export {get_items_byCategroy, send_message};

@@ -7,6 +7,7 @@ import {
   LandingScreen,
   SearchData,
   ItemDetails,
+  MessageScreen,
 } from '../screens';
 import {SafeAreaView} from 'react-native';
 import BottomTabs from './BottomTab';
@@ -43,6 +44,11 @@ const AppNavigator = () => {
           name={Constants.ITEMS_DETAIL_SCREEN}
           component={ItemDetails}
           options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name={Constants.MESSAGE_SCREEN}
+          component={MessageScreen}
+          // options={{headerShown: false}}
         />
         <Stack.Screen
           name={Constants.BOTTOM_TABS}
