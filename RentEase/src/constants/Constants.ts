@@ -5,7 +5,7 @@ export const LOGIN_SCREEN = 'LOGIN_SCREEN';
 export const LANDING_SCREEN = 'LANDING_SCREEN';
 export const SEARCH_DATA_SCREEN = 'SEARCH_DATA_SCREEN';
 export const ITEMS_DETAIL_SCREEN = 'ITEMS_DETAIL_SCREEN';
-
+export const MESSAGE_SCREEN = 'MESSAGE_SCREEN';
 //bottom tabs
 export const BOTTOM_TABS = 'BOTTOM_TABS';
 export const HOME_SCREEN = 'HOME_SCREEN';

@@ -168,6 +168,8 @@ const Theme = {
   icons: {
     landingImg: require('../resource/images/landingImg.jpg'),
     logo: require('../resource/images/logo.png'),
+    back_arrow: require('../resource/images/back-arrow.png'),
+    delete_icon: require('../resource/images/delete.png'),
   },
 };
 export default Theme;

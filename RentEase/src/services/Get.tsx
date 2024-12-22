@@ -5,4 +5,9 @@ async function get_home_items() {
   return res.data.data;
 }
 
-export {get_home_items};
+async function get_message(receiverId: string) {
+  const res = await API.get(`chat/get-messages?receiverId=${receiverId}`);
+  return res.data;
+}
+
+export {get_home_items, get_message};

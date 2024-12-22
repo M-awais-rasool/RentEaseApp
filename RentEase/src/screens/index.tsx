@@ -6,4 +6,5 @@ export * from './profileScreen';
 export * from './searchScreen';
 export * from './itemDetails';
 import {SearchData} from './searchScreen';
-export {SearchData};
+import {MessageScreen} from './chatScreen';
+export {SearchData, MessageScreen};

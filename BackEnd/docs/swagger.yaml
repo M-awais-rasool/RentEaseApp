@@ -18,6 +18,23 @@ definitions:
           type: string
         type: array
     type: object
+  models.Message:
+    description: Message model for sending messages
+    properties:
+      content:
+        description: |-
+          Content is the text content of the message.
+          Required: true
+        type: string
+      receiver_id:
+        description: |-
+          ReceiverID is the unique identifier of the message recipient.
+          Required: true
+        type: string
+    required:
+    - content
+    - receiver_id
+    type: object
   models.RentReq:
     description: Represents the request payload for renting a item
     properties:
@@ -34,6 +51,13 @@ definitions:
     - endDate
     - itemID
     - startDate
+    type: object
+  models.RequestBody:
+    properties:
+      messages:
+        items:
+          type: string
+        type: array
     type: object
   models.Response:
     description: Response payload for item details.
@@ -220,6 +244,140 @@ paths:
       summary: Rent a Items
       tags:
       - Rental Item
+  /chat/delete-messages:
+    delete:
+      consumes:
+      - application/json
+      description: Deletes messages by their IDs for the authenticated user.
+      parameters:
+      - description: List of message IDs to delete
+        in: body
+        name: messages
+        required: true
+        schema:
+          $ref: '#/definitions/models.RequestBody'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Messages deleted successfully
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Invalid request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Missing or invalid token
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Error deleting messages
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Delete messages
+      tags:
+      - Chat
+  /chat/get-messages:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves all messages sent by the authenticated user to a specific
+        receiver, ordered by timestamp in descending order.
+      parameters:
+      - description: Receiver User ID
+        in: query
+        name: receiverId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of messages
+          schema:
+            items:
+              additionalProperties: true
+              type: object
+            type: array
+        "400":
+          description: Receiver ID is required
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Missing or invalid token
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Error retrieving messages
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Get messages for the authenticated user with a specific receiver
+      tags:
+      - Chat
+  /chat/send-message:
+    post:
+      consumes:
+      - application/json
+      description: Sends a message from the authenticated user to another user. Validates
+        both SenderID (from token) and ReceiverID (from request body) exist in the
+        Users table.
+      parameters:
+      - description: Message data
+        in: body
+        name: message
+        required: true
+        schema:
+          $ref: '#/definitions/models.Message'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Message sent successfully
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Invalid SenderID or ReceiverID
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Missing or invalid token
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Error saving message
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Send a message to another user
+      tags:
+      - Chat
   /item/create-item:
     post:
       consumes:
