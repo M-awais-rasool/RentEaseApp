@@ -8,7 +8,7 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native';
-import React, {useEffect, useLayoutEffect, useRef, useState} from 'react';
+import React, {useEffect, useId, useLayoutEffect, useRef, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import styles from './styles';
 import {delete_messages, get_message, send_message} from '../../services';
@@ -120,7 +120,7 @@ export default function MessageScreen(props: any) {
         socket.current.send(JSON.stringify(newMessage));
       }
       const response = await send_message(item);
-      fetchMessages();
+      // fetchMessages();
       setMessage('');
     } catch (error) {
       console.log('Error sending message:', error);
@@ -149,12 +149,14 @@ export default function MessageScreen(props: any) {
   }, []);
 
   useEffect(() => {
-    socket.current = new WebSocket('http://192.168.100.118:8080/ws');
+    console.log('userId',userId);
+    socket.current = new WebSocket(`ws://192.168.100.10:8080/ws?userId=${userID}`)
     
     socket.current.onmessage = event => {
       if (event.data) {
         try {
           const incomingMessage = JSON.parse(event.data);
+          console.log(incomingMessage)
           setMessages((prevMessages:any) => {
             return [...(prevMessages || []), incomingMessage];
           });
@@ -170,7 +172,8 @@ export default function MessageScreen(props: any) {
         socket.current.close();
       }
     };
-  }, []);
+  }, [userId]);
+
   
 
   const deleteMessages = async () => {
