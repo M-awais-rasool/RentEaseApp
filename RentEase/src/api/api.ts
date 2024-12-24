@@ -4,14 +4,14 @@ import {cacheData} from '../module';
 import { Platform } from 'react-native';
 import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
 
-const API_BASE_URL = 'http://192.168.100.118:8080/';
+const API_BASE_URL = 'http://192.168.100.10:8080/';
 let token: any;
-
 
 export const API = axios.create({
   baseURL: API_BASE_URL,
   timeout: 6000,
 });
+
 
 API.interceptors.request.use(
   function (_config: any) {

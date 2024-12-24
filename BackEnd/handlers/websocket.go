@@ -16,7 +16,7 @@ var upgrader = websocket.Upgrader{
 }
 
 var (
-	clients   = make(map[*websocket.Conn]bool)
+	clients   = make(map[string]*websocket.Conn)
 	broadcast = make(chan Message)
 	mutex     = sync.Mutex{}
 )
@@ -29,6 +29,13 @@ type Message struct {
 }
 
 func WebSocketHandler(c *gin.Context) {
+	userID := c.Query("userId")
+	if userID == "" {
+		log.Println("Missing userId")
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Missing userId"})
+		return
+	}
+
 	ws, err := upgrader.Upgrade(c.Writer, c.Request, nil)
 	if err != nil {
 		log.Println("Error upgrading connection:", err)
@@ -37,17 +44,20 @@ func WebSocketHandler(c *gin.Context) {
 	defer ws.Close()
 
 	mutex.Lock()
-	clients[ws] = true
+	clients[userID] = ws
 	mutex.Unlock()
+
+	defer func() {
+		mutex.Lock()
+		delete(clients, userID)
+		mutex.Unlock()
+	}()
 
 	for {
 		var msg Message
 		err := ws.ReadJSON(&msg)
 		if err != nil {
 			log.Printf("Error reading JSON: %v", err)
-			mutex.Lock()
-			delete(clients, ws)
-			mutex.Unlock()
 			break
 		}
 		broadcast <- msg
@@ -57,14 +67,17 @@ func WebSocketHandler(c *gin.Context) {
 func BroadcastMessages() {
 	for {
 		msg := <-broadcast
+
 		mutex.Lock()
-		for client := range clients {
-			err := client.WriteJSON(msg)
+		if recipientConn, ok := clients[msg.ReceiverID]; ok {
+			err := recipientConn.WriteJSON(msg)
 			if err != nil {
-				log.Printf("Error broadcasting message: %v", err)
-				client.Close()
-				delete(clients, client)
+				log.Printf("Error sending message to recipient: %v", err)
+				recipientConn.Close()
+				delete(clients, msg.ReceiverID)
 			}
+		} else {
+			log.Printf("Recipient %s is not connected", msg.ReceiverID)
 		}
 		mutex.Unlock()
 	}
