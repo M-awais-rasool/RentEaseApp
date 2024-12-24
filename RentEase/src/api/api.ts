@@ -7,7 +7,6 @@ import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
 const API_BASE_URL = 'http://192.168.100.10:8080/';
 let token: any;
 
-
 export const API = axios.create({
   baseURL: API_BASE_URL,
   timeout: 6000,
