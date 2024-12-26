@@ -231,11 +231,13 @@ func GetAllItems(c *gin.Context) {
 		c.JSON(http.StatusUnauthorized, gin.H{"status": "error", "message": "Missing token"})
 		return
 	}
-	_, err := utils.ValidateToken(tokenString)
+	claim, err := utils.ValidateToken(tokenString)
 	if err != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{"status": "error", "message": "Invalid token"})
 		return
 	}
+
+	userId := claim.Subject
 
 	query := `
         SELECT ID, UserID, Name, Description, Category, Image1, Image2, Image3, status, price 
@@ -263,19 +265,22 @@ func GetAllItems(c *gin.Context) {
 			return
 		}
 
-		item := map[string]interface{}{
-			"id":          id,
-			"userID":      userID,
-			"name":        name,
-			"description": description,
-			"category":    category,
-			"status":      status,
-			"price":       price,
-			"image1":      image1,
-			"image2":      image2,
-			"image3":      image3,
+		// Exclude items belonging to the authenticated user
+		if userID != userId {
+			item := map[string]interface{}{
+				"id":          id,
+				"userID":      userID,
+				"name":        name,
+				"description": description,
+				"category":    category,
+				"status":      status,
+				"price":       price,
+				"image1":      image1,
+				"image2":      image2,
+				"image3":      image3,
+			}
+			items = append(items, item)
 		}
-		items = append(items, item)
 	}
 
 	c.JSON(http.StatusOK, gin.H{

@@ -153,8 +153,6 @@ const CarRentalScreen = (props: any) => {
         <TouchableOpacity
           onPress={() =>
             props.navigation.navigate(Constants.MESSAGE_SCREEN, {
-              id: item.id,
-              name: item.name,
               image: item.image1,
               userID: item.userID,
             })

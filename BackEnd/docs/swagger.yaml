@@ -378,6 +378,33 @@ paths:
       summary: Send a message to another user
       tags:
       - Chat
+  /chat/users-with-last-message:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves users and their last message exchanged with the authenticated
+        user.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of users with their last message
+          schema:
+            items:
+              additionalProperties: true
+              type: object
+            type: array
+        "500":
+          description: Error retrieving users and messages
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Get users with the last message in both directions
+      tags:
+      - Chat
   /item/create-item:
     post:
       consumes:
