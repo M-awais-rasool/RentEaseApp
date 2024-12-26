@@ -46,7 +46,6 @@ const HomeScreen = (props: any) => {
           />
         )}
         showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{alignItems: 'center'}}
       />
     </ScrollView>
   );

@@ -25,6 +25,7 @@ func SetRoutes() *gin.Engine {
 
 	router.POST("chat/send-message", handlers.SendMessage)
 	router.GET("chat/get-messages", handlers.GetMessages)
+	router.GET("chat/users-with-last-message", handlers.GetLastMessages)
 	router.DELETE("chat/delete-messages", handlers.DeleteMessages)
 
 	router.POST("Rent/rental-item", handlers.Rent_item)

@@ -10,4 +10,9 @@ async function get_message(receiverId: string) {
   return res.data;
 }
 
-export {get_home_items, get_message};
+async function get_chatList() {
+  const res = await API.get('chat/users-with-last-message');
+  return res.data.data;
+}
+
+export {get_home_items, get_message, get_chatList};

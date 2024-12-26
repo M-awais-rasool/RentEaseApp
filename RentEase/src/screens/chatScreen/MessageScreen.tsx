@@ -8,8 +8,8 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native';
-import React, {useEffect, useId, useLayoutEffect, useRef, useState} from 'react';
-import {useNavigation} from '@react-navigation/native';
+import React, {useEffect, useLayoutEffect, useRef, useState} from 'react';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import styles from './styles';
 import {delete_messages, get_message, send_message} from '../../services';
 import Theme from '../../theme/Theme';
@@ -18,9 +18,13 @@ import {AppConstants} from '../../module';
 
 export default function MessageScreen(props: any) {
   const [selectedMessages, setSelectedMessages] = useState<any>([]);
+  const [userName, setUserName] = useState({
+    userName: '',
+    userImage: '',
+  });
   const [messages, setMessages] = useState<any>([]);
   const navigation = useNavigation();
-  const {id, userID, name, image} = props.route?.params;
+  const {userID} = props.route?.params;
   const [message, setMessage] = useState('');
   const [userId, setUserId] = useState();
   const scrollViewRef: any = useRef(null);
@@ -46,8 +50,8 @@ export default function MessageScreen(props: any) {
             </View>
           ) : (
             <View style={styles.imgContainer}>
-              <Image style={styles.img} source={{uri: image}} />
-              <Text style={styles.userNameText}>{name}</Text>
+              <Image style={styles.img} source={{uri: userName.userImage}} />
+              <Text style={styles.userNameText}>{userName.userName}</Text>
             </View>
           )}
         </View>
@@ -64,7 +68,7 @@ export default function MessageScreen(props: any) {
           </View>
         ) : null,
     });
-  }, [selectedMessages]);
+  }, [selectedMessages, userName]);
 
   const formatTime = (time: any) => {
     const date = new Date(time);
@@ -97,6 +101,10 @@ export default function MessageScreen(props: any) {
     try {
       const res: any = await get_message(userID);
       if (res.status == 'success') {
+        setUserName({
+          userName: res.receiverName,
+          userImage: res.receiverImage,
+        });
         setMessages(res.messages);
       }
     } catch (error) {
@@ -144,20 +152,24 @@ export default function MessageScreen(props: any) {
     getUserID();
   }, []);
 
-  useEffect(() => {
-    fetchMessages();
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchMessages();
+    }, []),
+  );
 
   useEffect(() => {
-    console.log('userId',userId);
-    socket.current = new WebSocket(`ws://192.168.100.10:8080/ws?userId=${userID}`)
-    
+    console.log('userId', userId);
+    socket.current = new WebSocket(
+      `ws://192.168.100.153:8080/ws?userId=${userID}`,
+    );
+
     socket.current.onmessage = event => {
       if (event.data) {
         try {
           const incomingMessage = JSON.parse(event.data);
-          console.log(incomingMessage)
-          setMessages((prevMessages:any) => {
+          console.log(incomingMessage);
+          setMessages((prevMessages: any) => {
             return [...(prevMessages || []), incomingMessage];
           });
           scrollToBottom();
@@ -166,7 +178,7 @@ export default function MessageScreen(props: any) {
         }
       }
     };
-  
+
     return () => {
       if (socket.current) {
         socket.current.close();
@@ -174,27 +186,26 @@ export default function MessageScreen(props: any) {
     };
   }, [userId]);
 
-  
-
   const deleteMessages = async () => {
     try {
       let data = {
         messages: selectedMessages,
       };
       const res = await delete_messages(data);
-      console.log(res);
+      console.log(res)
       if (res) {
-      setSelectedMessages((prevSelectedMessages: any) =>
-        prevSelectedMessages.filter(
-          (id: any) => !selectedMessages.includes(id),
-        ),
-      );
-      fetchMessages();
+        setSelectedMessages((prevSelectedMessages: any) =>
+          prevSelectedMessages.filter(
+            (id: any) => !selectedMessages.includes(id),
+          ),
+        );
+        fetchMessages();
       }
-    } catch (error:any) {
+    } catch (error: any) {
       console.log(error.response.data);
     }
   };
+  console.log( userId)
 
   return (
     <KeyboardAvoidingView style={styles.contianer}>
