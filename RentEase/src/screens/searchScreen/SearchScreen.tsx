@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, TouchableOpacity, SafeAreaView, Alert} from 'react-native';
+import {View, Text, TouchableOpacity, Alert} from 'react-native';
 import styles from './styles';
 import Theme from '../../theme/Theme';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -63,7 +63,7 @@ const SearchScreen = (props: any) => {
   );
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <TouchableOpacity style={styles.notifIconContainer}>
         <View style={styles.subContainer}>
           <Ionicons
@@ -87,7 +87,7 @@ const SearchScreen = (props: any) => {
         ))}
         <CustomButton title="Search" onClick={() => handleSearch()} />
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 

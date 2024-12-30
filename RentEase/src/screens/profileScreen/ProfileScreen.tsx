@@ -3,9 +3,7 @@ import React, {useEffect} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ProfileScreen = () => {
-  useEffect(() => {
-    AsyncStorage.clear();
-  }, []);
+  
   return (
     <View>
       <Text>ProfileScreen</Text>
