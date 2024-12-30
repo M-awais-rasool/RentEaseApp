@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, FlatList, TouchableOpacity, TextInput} from 'react-native';
+import {View, Text, FlatList, TouchableOpacity, TextInput, StatusBar} from 'react-native';
 import {useQuery} from '@tanstack/react-query';
 import {get_chatList} from '../../services';
 import {Constants} from '../../constants';
@@ -26,13 +26,17 @@ const ChatListScreen = (props: any) => {
 
   return (
     <View style={styles.chatListContainer}>
+      <StatusBar barStyle='dark-content' backgroundColor="black" />
       <Text style={styles.headerTitle}>Chats</Text>
       <View style={styles.searchInput}>
         <TextInput
           placeholder="Search"
           placeholderTextColor="#888"
           value={search}
-          style={{color: Theme.colors.white}}
+          style={{
+            color: Theme.colors.white,
+            height: Theme.responsiveSize.size30,
+          }}
           onChangeText={setSearch}
         />
         <Icon name="search" size={20} color="#fff" />
@@ -60,7 +64,11 @@ const ChatListScreen = (props: any) => {
                 </View>
               </View>
             </View>
-            <View style={{rowGap:Theme.responsiveSize.size3,alignItems:'center'}}>
+            <View
+              style={{
+                rowGap: Theme.responsiveSize.size3,
+                alignItems: 'center',
+              }}>
               <Text style={styles.chatMessage}>
                 {item.last_message.timestamp}
               </Text>

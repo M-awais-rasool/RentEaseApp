@@ -1,4 +1,4 @@
-import {API} from '../api/api';
+import {API, API_FORMDATA} from '../api/api';
 
 async function get_items_byCategroy(categories: any) {
   const res = await API.post('item/get-items-by-categories', {categories});
@@ -10,4 +10,9 @@ async function send_message(data: any) {
   return res.data;
 }
 
-export {get_items_byCategroy, send_message};
+async function add_item(data: any) {
+  const res = await API_FORMDATA.post('item/create-item', data);
+  return res.data;
+}
+
+export {get_items_byCategroy, send_message, add_item};

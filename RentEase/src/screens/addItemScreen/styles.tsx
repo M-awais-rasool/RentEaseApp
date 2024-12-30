@@ -102,9 +102,14 @@ const styles = StyleSheet.create({
   descriptionContainer: {
     backgroundColor: Theme.colors.bgColor12,
     borderRadius: Theme.responsiveSize.size5,
-    maxHeight: Theme.responsiveSize.size100,
     minHeight: Theme.responsiveSize.size100,
+    maxHeight:Theme.responsiveSize.size100,
     marginTop: 0,
+    color:Theme.colors.white,
+    paddingTop: Theme.responsiveSize.size10, 
+    paddingLeft: Theme.responsiveSize.size10, 
+    paddingRight: Theme.responsiveSize.size10, 
+    paddingBottom: Theme.responsiveSize.size10, 
   },
   row: {
     flexDirection: 'row',

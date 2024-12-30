@@ -13,8 +13,11 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import styles from './styles';
 import Theme from '../../theme/Theme';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {CustomButton, InputText} from '../../components';
+import {CustomButton, DropDown, InputText} from '../../components';
 import {checkPermission} from '../../api/api';
+import {useMutation} from '@tanstack/react-query';
+import {AxiosError, AxiosResponse} from 'axios';
+import {add_item} from '../../services';
 
 const AddItemScreen = () => {
   const [images, setImages] = useState<string[]>([]);
@@ -57,6 +60,46 @@ const AddItemScreen = () => {
     newImages[index] = null;
     setImages(newImages.filter(Boolean));
   };
+
+  const addItem = async () => {
+    if (!itemName || !description || !price || !category || images.length < 3) {
+      Alert.alert('Error', 'Please fill in all fields and add 3 images');
+      return;
+    }
+    const formData = new FormData();
+    formData.append('name', itemName);
+    formData.append('description', description);
+    formData.append('category', category);
+    formData.append('price', price);
+
+    images.forEach((image, index) => {
+      if (image) {
+        formData.append(`image${index + 1}`, {
+          uri: image,
+          type: 'image/jpeg',
+          name: `image${index + 1}.jpg`,
+        });
+      }
+    });
+
+    addItemMutation.mutate(formData);
+  };
+
+  const addItemMutation = useMutation<AxiosResponse<any>, AxiosError, any>({
+    mutationFn: add_item,
+    onSuccess: data => {
+      Alert.alert('Success', 'Item added successfully!');
+      setCategory('');
+      setDescription('');
+      setItemName('');
+      setPrice('');
+      setImages([]);
+    },
+    onError: (err: any) => {
+      console.error(err.response.data);
+      Alert.alert('Error', 'Failed to add item');
+    },
+  });
 
   return (
     <ScrollView style={styles.container} keyboardShouldPersistTaps="handled">
@@ -146,21 +189,25 @@ const AddItemScreen = () => {
           value={itemName}
           onChangeText={setItemName}
         />
-        <InputText
-          title="Description"
-          bgStyle={styles.descriptionContainer}
-          textStyle={styles.label}
-          value={description}
-          onChangeText={setDescription}
-        />
+        <View>
+          <Text style={styles.label}>{'Description'}</Text>
+          <TextInput
+            style={styles.descriptionContainer}
+            keyboardType="numeric"
+            value={description}
+            onChangeText={setDescription}
+            multiline={true}
+            numberOfLines={5}
+            textAlignVertical="top"
+          />
+        </View>
+
         <View style={styles.row}>
           <View style={styles.priceContainer}>
             <Text style={styles.label}>{'Price'}</Text>
             <View style={styles.priceInputContainer}>
               <TextInput
                 style={styles.priceInput}
-                placeholder="0"
-                placeholderTextColor="#666666"
                 keyboardType="numeric"
                 value={price}
                 onChangeText={setPrice}
@@ -168,20 +215,18 @@ const AddItemScreen = () => {
               <Text style={styles.priceUnit}>{'/day'}</Text>
             </View>
           </View>
-          <View style={styles.categoryContainer}>
+          <View style={styles.priceContainer}>
             <Text style={styles.label}>{'Category'}</Text>
-            <TouchableOpacity style={styles.categoryButton}>
-              <Text style={styles.categoryButtonText}>
-                {category || 'Select'}
-              </Text>
-              <Icon name="chevron-down" size={20} color="#666666" />
-            </TouchableOpacity>
+            <DropDown selectedItem={category} setSelectedItem={setCategory} />
           </View>
         </View>
-        <CustomButton title="add item" onClick={() => {}} />
+        <CustomButton title="add item" onClick={() => addItem()} />
       </View>
     </ScrollView>
   );
 };
 
 export default AddItemScreen;
+function useAddItemMutation(): {mutate: any; isLoading: any} {
+  throw new Error('Function not implemented.');
+}
