@@ -35,15 +35,20 @@ const styles = StyleSheet.create({
     height: '100%',
     resizeMode: 'cover',
   },
+  footer1: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
   footer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     position: 'absolute',
     bottom: Theme.responsiveSize.size40,
-    backgroundColor: Theme.colors.black,
+    backgroundColor: Theme.colors.appColor,
     height: Theme.responsiveSize.size70,
-    width: '85%',
+    width: '95%',
     alignSelf: 'center',
     borderRadius: Theme.responsiveSize.size20,
     paddingHorizontal: Theme.responsiveSize.size20,
@@ -52,6 +57,24 @@ const styles = StyleSheet.create({
     fontSize: Theme.responsiveSize.size14,
     color: Theme.colors.white,
     fontWeight: 'bold',
+  },
+  modalContainer: {
+    flex: Theme.responsiveSize.size1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'flex-end',
+  },
+  calendarContainer: {
+    width: '95%',
+    backgroundColor: Theme.colors.appColor,
+    borderRadius: Theme.responsiveSize.size20,
+    padding: Theme.responsiveSize.size20,
+    alignSelf: 'center',
+    bottom: Theme.responsiveSize.size40,
+  },
+  roundedContainer: {
+    borderRadius: Theme.responsiveSize.size20,
+    overflow: 'hidden',
+    marginBottom: Theme.responsiveSize.size20,
   },
 });
 

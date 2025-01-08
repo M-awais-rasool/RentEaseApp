@@ -74,7 +74,7 @@ const LoginSection = ({onPress}: any) => {
     },
     onError: (error: any) => {
       showToast(error.response.data.message, 'error', 'bottom', 1000);
-      console.error('Login failed:', error.response.data.message);
+      console.error('Login failed:', error);
     },
   });
 
