@@ -74,7 +74,7 @@ func Rent_item(c *gin.Context) {
 	err = database.DB.QueryRow(query, req.ItemID).Scan(&currentStatus)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			c.JSON(http.StatusNotFound, gin.H{"error": "Car not found"})
+			c.JSON(http.StatusNotFound, gin.H{"error": "item not found"})
 		} else {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Database query error"})
 		}
@@ -82,7 +82,7 @@ func Rent_item(c *gin.Context) {
 	}
 
 	if currentStatus == "not available" {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Car is already rented"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "item is already rented"})
 		return
 	}
 
@@ -95,9 +95,9 @@ func Rent_item(c *gin.Context) {
 	}
 
 	insertRentalQuery := `
-		INSERT INTO rental (id, user_id, item_id, start_date, end_date, rental_status) 
-		VALUES (?, ?, ?, ?, ?, ?)`
-	_, err = tx.Exec(insertRentalQuery, rentalID, userId, req.ItemID, startDate.Format("2006-01-02"), endDate.Format("2006-01-02"), "active")
+		INSERT INTO rental (id, user_id, item_id, start_date, end_date, rental_status, totalPrice) 
+		VALUES (?, ?, ?, ?, ?, ?, ?)`
+	_, err = tx.Exec(insertRentalQuery, rentalID, userId, req.ItemID, startDate.Format("2006-01-02"), endDate.Format("2006-01-02"), "active", req.TotalPrice)
 	if err != nil {
 		tx.Rollback()
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to insert rental record"})

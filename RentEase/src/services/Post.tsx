@@ -15,4 +15,9 @@ async function add_item(data: any) {
   return res.data;
 }
 
-export {get_items_byCategroy, send_message, add_item};
+async function rent_item(data: any) {
+  const res = await API.post('Rent/rental-item', data);
+  return res.data;
+}
+
+export {get_items_byCategroy, send_message, add_item, rent_item};
