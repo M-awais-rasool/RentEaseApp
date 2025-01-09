@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Animated,
   Modal,
+  Alert,
 } from 'react-native';
 import styles from './styles';
 import {CustomButton} from '../../components';
@@ -14,6 +15,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Theme from '../../theme/Theme';
 import {Constants} from '../../constants';
 import {Calendar} from 'react-native-calendars';
+import {rent_item} from '../../services';
 
 const {width} = Dimensions.get('window');
 
@@ -168,7 +170,7 @@ const CarRentalScreen = (props: any) => {
             </TouchableOpacity>
             <CustomButton
               title="Rent"
-              onClick={() => setShowCalendar(true)}
+              onClick={() => handleRent()}
               bgStyle={{width: Theme.responsiveSize.size100}}
             />
           </View>
@@ -176,7 +178,47 @@ const CarRentalScreen = (props: any) => {
       </View>
     </Modal>
   );
+  const handleRent = async () => {
+    if (!range.startDate || !range.endDate) {
+      Alert.alert('Error', 'Please select a valid date range.');
+      return;
+    }
+    const requestBody = {
+      itemID: item.id,
+      startDate: range.startDate,
+      endDate: range.endDate,
+      totalPrice: calculateTotalPrice(
+        range.startDate,
+        range.endDate,
+        item.price,
+      ),
+    };
 
+    try {
+      const response = await rent_item(requestBody);
+      console.log(response);
+      if (response) {
+        Alert.alert('Success', 'Item rented successfully.');
+        setShowCalendar(false);
+      } else {
+        Alert.alert('Error', response.message || 'Failed to rent item.');
+      }
+    } catch (error: any) {
+      console.log('Error renting item:', error.response.data.error);
+      Alert.alert('Error', error.response.data.error);
+    }
+  };
+  const calculateTotalPrice = (
+    startDate: string,
+    endDate: string,
+    price: number,
+  ) => {
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    const diffTime = Math.abs(end.getTime() - start.getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return (diffDays * price).toString();
+  };
   return (
     <View style={styles.contianer}>
       <Animated.ScrollView
