@@ -107,13 +107,18 @@ func GetMessages(c *gin.Context) {
 		return
 	}
 
-	var receiverName, receiverImage string
-	err = database.DB.QueryRow("SELECT Name, Image FROM Users WHERE ID = ?", receiverId).Scan(&receiverName, &receiverImage)
+	var receiverName string
+	var receiverImage *string
+	err = database.DB.QueryRow("SELECT name, image FROM Users WHERE id = ?", receiverId).Scan(&receiverName, &receiverImage)
 	if err != nil {
+		log.Println("Error querying receiver:", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error retrieving receiver's details"})
 		return
 	}
-
+	if receiverImage == nil {
+		receiverImage = new(string)
+		*receiverImage = ""
+	}
 	query := `
         SELECT 
             m.ID, 
@@ -161,7 +166,7 @@ func GetMessages(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"status":        "success",
 		"receiverName":  receiverName,
-		"receiverImage": receiverImage,
+		"receiverImage": *receiverImage,
 		"messages":      messages,
 	})
 }
@@ -277,9 +282,9 @@ func GetLastMessages(c *gin.Context) {
         WHERE SenderID = ? OR ReceiverID = ?
     )
     SELECT 
-        u.ID,
-        u.Name,
-        u.Image,
+        u.id,
+        u.name,
+        u.image,
         m.ID AS MessageID,
         m.Content,
         m.Timestamp,
@@ -288,11 +293,11 @@ func GetLastMessages(c *gin.Context) {
         m.IsRead,
         (SELECT COUNT(*) 
          FROM Messages 
-         WHERE SenderID = u.ID 
+         WHERE SenderID = u.id 
          AND ReceiverID = ? 
          AND IsRead = 0) as UnreadCount
     FROM LatestMessages m
-    JOIN Users u ON u.ID = m.ContactID
+    JOIN Users u ON u.id = m.ContactID
     WHERE m.rn = 1
     ORDER BY m.Timestamp DESC`
 
@@ -306,16 +311,18 @@ func GetLastMessages(c *gin.Context) {
 
 	var chats []gin.H
 	for rows.Next() {
+		var userImage *string
 		var (
-			userID, userName, userImage, msgID, content, senderID, receiverID string
-			timestamp                                                         time.Time
-			isRead                                                            bool
-			unreadCount                                                       int
+			userID, userName, msgID, content, senderID, receiverID string
+			timestamp                                              time.Time
+			isRead                                                 bool
+			unreadCount                                            int
 		)
 
 		err := rows.Scan(&userID, &userName, &userImage, &msgID, &content, &timestamp,
 			&senderID, &receiverID, &isRead, &unreadCount)
 		if err != nil {
+			log.Println("Error querying receiver:", err)
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to scan row"})
 			return
 		}

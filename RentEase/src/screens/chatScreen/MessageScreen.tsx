@@ -107,8 +107,8 @@ export default function MessageScreen(props: any) {
         });
         setMessages(res.messages);
       }
-    } catch (error) {
-      console.log('Error fetching messages:', error);
+    } catch (error: any) {
+      console.log('Error fetching messages:', error.response.data);
     }
   };
 
@@ -192,7 +192,7 @@ export default function MessageScreen(props: any) {
         messages: selectedMessages,
       };
       const res = await delete_messages(data);
-      console.log(res)
+      console.log(res);
       if (res) {
         setSelectedMessages((prevSelectedMessages: any) =>
           prevSelectedMessages.filter(
@@ -205,7 +205,7 @@ export default function MessageScreen(props: any) {
       console.log(error.response.data);
     }
   };
-  console.log( userId)
+  console.log(userId);
 
   return (
     <KeyboardAvoidingView style={styles.contianer}>
