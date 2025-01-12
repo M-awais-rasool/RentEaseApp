@@ -64,7 +64,7 @@ func CreateItem(c *gin.Context) {
 
 	req.Status = "available"
 
-	s3Region, accessKeyID, s3Bucket, secretKey := envConfig.GetEnvVars()
+	s3Region, accessKeyID, s3Bucket, secretKey, _, _, _, _, _, _ := envConfig.GetEnvVars()
 	cfg, err := config.LoadDefaultConfig(context.TODO(),
 		config.WithRegion(s3Region),
 		config.WithCredentialsProvider(credentials.NewStaticCredentialsProvider(
@@ -265,7 +265,6 @@ func GetAllItems(c *gin.Context) {
 			return
 		}
 
-		// Exclude items belonging to the authenticated user
 		if userID != userId {
 			item := map[string]interface{}{
 				"id":          id,

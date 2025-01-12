@@ -2,6 +2,8 @@ package database
 
 import (
 	"database/sql"
+	"demo/envConfig"
+	"fmt"
 	"log"
 
 	_ "github.com/denisenkom/go-mssqldb"
@@ -11,16 +13,22 @@ var DB *sql.DB
 
 func ConnectDB() {
 	var err error
-	connString := "server=localhost;user id=SA;password=MyStrongPass123;port=1433;database=Behance;encrypt=disable"
+
+	envConfig.LoadEnv()
+
+	_, _, _, _, dbServer, dbUser, dbPassword, dbPort, dbName, dbEncrypt := envConfig.GetEnvVars()
+
+	connString := fmt.Sprintf("server=%s;user id=%s;password=%s;port=%s;database=%s;encrypt=%s",
+		dbServer, dbUser, dbPassword, dbPort, dbName, dbEncrypt)
 
 	DB, err = sql.Open("mssql", connString)
 	if err != nil {
-		log.Fatal("Error opening connection to database: ", err.Error())
+		log.Fatalf("Error opening connection to database: %v", err)
 	}
 
 	err = DB.Ping()
 	if err != nil {
-		log.Fatal("Error pinging database: ", err.Error())
+		log.Fatalf("Error pinging database: %v", err)
 	}
 
 	log.Println("Connected to the database successfully!")

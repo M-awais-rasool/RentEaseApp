@@ -193,7 +193,7 @@ const AddItemScreen = () => {
           <Text style={styles.label}>{'Description'}</Text>
           <TextInput
             style={styles.descriptionContainer}
-            keyboardType="numeric"
+            keyboardType='default'
             value={description}
             onChangeText={setDescription}
             multiline={true}
