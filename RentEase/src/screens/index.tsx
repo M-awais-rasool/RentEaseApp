@@ -7,4 +7,5 @@ export * from './searchScreen';
 export * from './itemDetails';
 import {SearchData} from './searchScreen';
 import {MessageScreen} from './chatScreen';
-export {SearchData, MessageScreen};
+import {EditProfileScreen} from './profileScreen';
+export {SearchData, MessageScreen, EditProfileScreen};

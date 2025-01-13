@@ -30,6 +30,8 @@ func SetRoutes() *gin.Engine {
 
 	router.POST("Rent/rental-item", handlers.Rent_item)
 
+	router.GET("Profile/get-profile", handlers.Get_profile)
+	router.PUT("Profile/update-profile", handlers.UpdateProfile)
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	return router
 }

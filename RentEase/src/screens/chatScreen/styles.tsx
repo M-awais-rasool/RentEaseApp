@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
 
   sendMessgContainer: {
     alignSelf: 'flex-end',
-    backgroundColor: '#DCF8C6',
+    backgroundColor: Theme.colors.bgColor1,
     padding: 8,
     maxWidth: '60%',
     borderRadius: 7,
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
   messgTime: {
     textAlign: 'right',
     fontSize: 9,
-    color: 'gray',
+    color: Theme.colors.bgColor6,
     marginTop: 5,
   },
   inputContainer: {
@@ -54,15 +54,16 @@ const styles = StyleSheet.create({
     color: Theme.colors.white,
   },
   messgSendBtn: {
-    backgroundColor: '#1E71B7',
+    backgroundColor: Theme.colors.bgColor1,
     paddingVertical: 8,
     paddingHorizontal: 12,
     borderRadius: 20,
     marginLeft: 10,
   },
   messgSendText: {
-    color: 'white',
+    color: Theme.colors.black,
     fontWeight: 'bold',
+    letterSpacing: 0.7,
   },
   imgContainer: {
     flexDirection: 'row',

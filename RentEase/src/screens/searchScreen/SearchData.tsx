@@ -1,4 +1,11 @@
-import {View, Text, TouchableOpacity, FlatList, ScrollView} from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  FlatList,
+  ScrollView,
+  Image,
+} from 'react-native';
 import React from 'react';
 import styles from './styles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -16,15 +23,24 @@ const SearchData = (props: any) => {
   );
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.notifIconContainer}>
-        <View style={styles.subContainer}>
-          <Ionicons
-            name="notifications-outline"
-            size={Theme.responsiveSize.size16}
-            color={Theme.colors.white}
-          />
-        </View>
-      </TouchableOpacity>
+      <View style={styles.flexRow}>
+        <TouchableOpacity
+          style={styles.notifIconContainer}
+          onPress={() => props.navigation.goBack()}>
+          <View style={styles.subContainer}>
+            <Image source={Theme.icons.back_arrow} />
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.notifIconContainer}>
+          <View style={styles.subContainer}>
+            <Ionicons
+              name="notifications-outline"
+              size={Theme.responsiveSize.size16}
+              color={Theme.colors.white}
+            />
+          </View>
+        </TouchableOpacity>
+      </View>
       <View>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           {filter.map((option: any) => (

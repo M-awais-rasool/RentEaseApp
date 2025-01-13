@@ -13,3 +13,4 @@ export const SEARCH_SCREEN = 'SEARCH_SCREEN';
 export const CHAT_SCREEN = 'CHAT_SCREEN';
 export const PROFILE_SCREEN = 'PROFILE_SCREEN';
 export const ADD_ITEM_SCREEN = 'ADD_ITEM_SCREEN';
+export const EDIT_PROFILE = 'editProfile'

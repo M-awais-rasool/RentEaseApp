@@ -130,8 +130,8 @@ export default function MessageScreen(props: any) {
       const response = await send_message(item);
       // fetchMessages();
       setMessage('');
-    } catch (error) {
-      console.log('Error sending message:', error);
+    } catch (error:any) {
+      console.log('Error sending message:', error.response.data);
     }
   };
 
@@ -161,7 +161,7 @@ export default function MessageScreen(props: any) {
   useEffect(() => {
     console.log('userId', userId);
     socket.current = new WebSocket(
-      `ws://192.168.100.153:8080/ws?userId=${userID}`,
+      `ws://192.168.100.252:8080/ws?userId=${userID}`,
     );
 
     socket.current.onmessage = event => {

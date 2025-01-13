@@ -47,10 +47,14 @@ definitions:
       startDate:
         example: "2024-01-15"
         type: string
+      totalPrice:
+        example: "200"
+        type: string
     required:
     - endDate
     - itemID
     - startDate
+    - totalPrice
     type: object
   models.RequestBody:
     properties:
@@ -106,6 +110,19 @@ definitions:
       status:
         example: success
         type: string
+    type: object
+  models.UpdateProfileRequest:
+    description: Model for updating user profile
+    properties:
+      email:
+        type: string
+      image:
+        type: string
+      name:
+        type: string
+    required:
+    - email
+    - name
     type: object
   models.UserSignIn:
     description: Model for user registration
@@ -194,6 +211,80 @@ paths:
       summary: Register a new user
       tags:
       - Auth
+  /Profile/get-profile:
+    get:
+      consumes:
+      - application/json
+      description: Get user data
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Get Profile
+      tags:
+      - Profile
+  /Profile/update-profile:
+    put:
+      consumes:
+      - application/json
+      description: Update the profile of the authenticated user
+      parameters:
+      - description: Profile data
+        in: body
+        name: profile
+        required: true
+        schema:
+          $ref: '#/definitions/models.UpdateProfileRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Update user profile
+      tags:
+      - Profile
   /Rent/rental-item:
     post:
       consumes:

@@ -59,6 +59,7 @@ const Theme = {
     textColor28: '#888',
     textColor29: '#838799',
     textColor30: '#9C9BA6',
+    textColor31: '#9e9e9e',
 
     borderColor1: '#444',
     borderColor2: '#E4E0E9',
