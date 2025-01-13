@@ -19,5 +19,9 @@ async function rent_item(data: any) {
   const res = await API.post('Rent/rental-item', data);
   return res.data;
 }
+async function profile_update(data: any) {
+  const res = await API.put('Profile/update-profile', data);
+  return res.data;
+}
 
-export {get_items_byCategroy, send_message, add_item, rent_item};
+export {get_items_byCategroy, send_message, add_item, rent_item,profile_update};

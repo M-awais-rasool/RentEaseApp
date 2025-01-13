@@ -8,6 +8,7 @@ import {
   SearchData,
   ItemDetails,
   MessageScreen,
+  EditProfileScreen,
 } from '../screens';
 import {SafeAreaView} from 'react-native';
 import BottomTabs from './BottomTab';
@@ -53,6 +54,11 @@ const AppNavigator = () => {
         <Stack.Screen
           name={Constants.BOTTOM_TABS}
           component={BottomTabs}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name={Constants.EDIT_PROFILE}
+          component={EditProfileScreen}
           options={{headerShown: false}}
         />
       </Stack.Navigator>

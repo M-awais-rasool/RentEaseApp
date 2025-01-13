@@ -31,3 +31,15 @@ type SignUp struct {
 	Email    string `json:"email" binding:"required,email"`
 	Password string `json:"password" binding:"required,min=6"`
 }
+
+// UpdateProfileRequest represents the user profile update details.
+// @Description Model for updating user profile
+// @type UpdateProfileRequest
+// @property {string} name The name of the user
+// @property {string} email The email of the user
+// @property {string} image The image URL of the user
+type UpdateProfileRequest struct {
+	Name  string `json:"name" binding:"required"`
+	Email string `json:"email" binding:"required,email"`
+	Image string `json:"image"`
+}

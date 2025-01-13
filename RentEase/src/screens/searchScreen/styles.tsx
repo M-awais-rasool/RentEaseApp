@@ -69,6 +69,19 @@ const styles = StyleSheet.create({
   marginV5: {
     marginTop: Theme.responsiveSize.size5,
   },
+  backArrow: {
+    width: Theme.responsiveSize.size30,
+    height: Theme.responsiveSize.size30,
+    borderRadius: Theme.responsiveSize.size35,
+    backgroundColor: Theme.colors.bgColor12,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  flexRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
 });
 
 export default styles;

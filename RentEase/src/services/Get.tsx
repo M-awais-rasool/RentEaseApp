@@ -15,4 +15,9 @@ async function get_chatList() {
   return res.data.data;
 }
 
-export {get_home_items, get_message, get_chatList};
+async function get_profile() {
+  const res = await API.get('Profile/get-profile');
+  return res.data.data;
+}
+
+export {get_home_items, get_message, get_chatList,get_profile};
